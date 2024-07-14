@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Modal from 'react-modal';
 import NoteCard from "../components/cards/NoteCard"
-import AddEditNotes from "../components/modal/AddEditNotes";
+import AddEditNotes from "./AddEditNotes";
 import Navbar from "../components/nav/Navbar"
 import { MdAdd } from "react-icons/md";
 
@@ -53,6 +53,7 @@ const Home = () => {
       </button>
 
       <Modal
+        appElement={document.getElementById('root')}
         isOpen={openAddEditModal.isShown}
         onRequestClose={() => { }}
         style={{
@@ -63,7 +64,17 @@ const Home = () => {
         contentLabel={""}
         className="w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-auto"
       >
-        <AddEditNotes />
+        <AddEditNotes 
+          type={openAddEditModal.type}
+          noteData={openAddEditModal.data}
+          onClose={()=>{
+            setOpenAddEditModal({
+              isShown: false,
+              type: 'add',
+              data: null
+            })
+          }}
+        />
       </Modal>
     </>
   )
