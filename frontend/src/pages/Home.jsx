@@ -28,7 +28,7 @@ const Home = () => {
     <>
       <Navbar />
       <div className="container mx-auto">
-        <div className="md:grid md:grid-cols-3 md:gap-4 md:mt-6">
+        <div className="md:grid md:grid-cols-3 md:gap-4 md:mt-6 mb-20 md:mb-0">
           {noteCard}
           {noteCard}
           {noteCard}
@@ -37,14 +37,13 @@ const Home = () => {
           {noteCard}
         </div>
       </div>
-
-      <button 
-        className="w-16 h-16 flex items-center justify-center rounded-2xl bg-primary hover:bg-blue-600 absolute right-10 bottom-10"
+      <button
+        className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full md:rounded-2xl bg-primary hover:bg-blue-600 fixed right-4 bottom-6 md:bottom-10 md:right-10"
         onClick={() => {
           setOpenAddEditModal({
-            isShown:true,
-            type:'add',
-            data:null
+            isShown: true,
+            type: 'add',
+            data: null
           });
         }}>
         <MdAdd
@@ -62,12 +61,12 @@ const Home = () => {
           }
         }}
         contentLabel={""}
-        className="w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-auto"
+        className="w-[90%] md:w-[50%] max-h-[90%] bg-white rounded-md mx-auto mt-14 p-5 overflow-auto"
       >
-        <AddEditNotes 
+        <AddEditNotes
           type={openAddEditModal.type}
           noteData={openAddEditModal.data}
-          onClose={()=>{
+          onClose={() => {
             setOpenAddEditModal({
               isShown: false,
               type: 'add',

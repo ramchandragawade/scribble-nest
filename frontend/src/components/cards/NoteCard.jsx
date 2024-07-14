@@ -1,7 +1,7 @@
 import { MdOutlinePushPin, MdCreate, MdDelete } from 'react-icons/md'
 const NoteCard = ({ title, date, content, tags, isPinned, onEdit, onDelete, onPinNote }) => {
     return (
-        <div className="my-2 border rounded p-4 bg-white hover:shadow-xl transition-all ease-in-out">
+        <div className="mx-2 md:mx-0 my-2 border rounded p-4 bg-white hover:shadow-xl transition-all ease-in-out">
             <div className="flex items-center justify-between">
                 <div className="">
                     <h6 className="text-sm font-medium">{title}</h6>

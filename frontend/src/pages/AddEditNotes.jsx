@@ -58,7 +58,7 @@ const AddEditNotes = ({ noteData, type, onClose }) => {
             <div className="flex flex-col gap-2">
                 <label htmlFor="" className="input-label">TITLE</label>
                 <input type="text"
-                    className="text-2xl text-slate-950 outline-none"
+                    className="text-md md:text-2xl text-slate-950 outline-none"
                     placeholder="Summary for the note"
                     value={title}
                     onChange={onTitleChange}
