@@ -40,8 +40,8 @@ const Navbar = () => {
         </div>
 
         {/* Menu Items */}
-        <div className={"md:flex" + (navbarOpen ? " flex" : " hidden")}>
-          <ul className="flex flex-wrap md:items-center flex-col-reverse md:flex-row">
+        <div className={"w-full md:w-fit md:flex" + (navbarOpen ? " flex" : " hidden")}>
+          <ul className="w-full md:w-fit flex flex-wrap md:items-center flex-col-reverse md:flex-row">
             <li className="nav-item my-2 md:my-0 md:mr-10">
               <SearchBar
                 value={searchQuery}
@@ -50,12 +50,11 @@ const Navbar = () => {
                 }}
                 handleSearch={handleSearch}
                 handleClearSearch={handleClearSearch}
-                className=''
               />
 
             </li>
             <li className="nav-item">
-              <ProfileInfo onLogout={onLogout} className='' />
+              <ProfileInfo onLogout={onLogout} />
             </li>
           </ul>
         </div>
