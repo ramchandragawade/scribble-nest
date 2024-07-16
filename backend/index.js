@@ -110,7 +110,7 @@ app.post('/login', async (req, res) => {
 
 })
 
-app.post('/add-note', authenticateToken, async (req, res) => {
+app.post('/note', authenticateToken, async (req, res) => {
     const { title, content, tags } = req.body;
     const { user } = req.user;
     if (!title) {
@@ -148,7 +148,7 @@ app.post('/add-note', authenticateToken, async (req, res) => {
 
 })
 
-app.put('/edit-note/:noteId', authenticateToken, async (req, res) => {
+app.put('/note/:noteId', authenticateToken, async (req, res) => {
     const noteId = req.params.noteId;
     const { title, content, tags, isPinned } = req.body;
     const { user } = req.user;
@@ -221,7 +221,39 @@ app.get('/all-notes', authenticateToken, async (req, res) => {
             errorText: e
         })
     }
-})
+});
+
+app.delete('/note/:noteId', authenticateToken, async(req,res)=>{
+    const noteId = req.params.noteId;
+    const { user } = req.user;
+    try{
+        const note = await Notes.findOne({
+            _id: noteId,
+            userId: user._id
+        });
+        if(!note) {
+            return res.status(404).json({
+                error: true,
+                message: 'Note not found!'
+            })
+        }
+        await Notes.deleteOne({
+            _id: noteId,
+            userId: user._id
+        });
+        return res.json({
+            error: false,
+            note,
+            message: 'Deleted the note'
+        });
+    } catch(e) {
+        res.status(500).json({
+            error: true,
+            message: 'Internal server error',
+            errorText: e
+        })
+    }
+});
 
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
