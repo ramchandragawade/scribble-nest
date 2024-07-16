@@ -201,6 +201,28 @@ app.put('/edit-note/:noteId', authenticateToken, async (req, res) => {
 
 })
 
+app.get('/all-notes', authenticateToken, async (req, res) => {
+    const { user } = req.user;
+    try {
+        const notes = await Notes.find({
+            userId : user._id
+        }).sort({
+            isPinned: -1
+        });
+        return res.json({
+            error: false,
+            notes,
+            message: 'Retreived all notes'
+        });
+    } catch(e) {
+        res.status(500).json({
+            error: true,
+            message: 'Internal server error',
+            errorText: e
+        })
+    }
+})
+
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
     console.log('Connected BE to 3002');
