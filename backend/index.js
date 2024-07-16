@@ -138,7 +138,60 @@ app.post('/add-note', authenticateToken, async (req, res) => {
             note,
             message: 'Note saved successfully'
         });
-    } catch(e){
+    } catch (e) {
+        return res.status(500).json({
+            error: true,
+            message: 'Internal server error',
+            errorText: e
+        })
+    }
+
+})
+
+app.put('/edit-note/:noteId', authenticateToken, async (req, res) => {
+    const noteId = req.params.noteId;
+    const { title, content, tags, isPinned } = req.body;
+    const { user } = req.user;
+    if (!title && !content && tags) {
+        return res.status(400).json({
+            error: true,
+            message: 'No changes'
+        })
+    }
+    try {
+        const note = await Notes.findOne({ _id: noteId, userId: user._id });
+        if (!note) {
+            return res.status(404).json({
+                error: true,
+                message: 'Note not found!'
+            })
+        }
+        if (title) {
+            note.title = title;
+        }
+        if (content) {
+            note.content = content;
+        }
+        // if(tags.length>0){
+        //     if(note.tags.length>0){
+        //         note.tags.push(...tags);
+        //     } else {
+        //         note.tags = tags
+        //     }
+        // }
+        if (tags) {
+            note.tags = tags;
+        }
+        if (isPinned) {
+            note.isPinned = isPinned;
+        }
+        await note.save();
+        return res.json({
+            error: false,
+            note,
+            message: 'Note updated successfully'
+        });
+    } catch (e) {
         return res.status(500).json({
             error: true,
             message: 'Internal server error',
