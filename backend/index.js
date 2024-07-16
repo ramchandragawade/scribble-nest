@@ -108,6 +108,30 @@ app.post('/login', async (req, res) => {
         })
     }
 
+});
+
+app.get('/user', authenticateToken, async (req, res) => {
+    const { user } = req.user;
+    
+    if(!user) {
+        return res.status(400).json({
+            error: true,
+            message: 'User not available'
+        })
+    }
+    const isUser = await User.findOne({ _id: user._id });
+    if (!isUser) {
+        return res.status(401).json({
+            error: true,
+            message: 'User not found'
+        })
+    }
+    return res.json({
+        error: false,
+        user: isUser,
+        message: 'User found'
+    });
+
 })
 
 app.post('/note', authenticateToken, async (req, res) => {
@@ -146,7 +170,7 @@ app.post('/note', authenticateToken, async (req, res) => {
         })
     }
 
-})
+});
 
 app.put('/note/:noteId', authenticateToken, async (req, res) => {
     const noteId = req.params.noteId;
@@ -199,7 +223,7 @@ app.put('/note/:noteId', authenticateToken, async (req, res) => {
         })
     }
 
-})
+});
 
 app.get('/all-notes', authenticateToken, async (req, res) => {
     const { user } = req.user;
