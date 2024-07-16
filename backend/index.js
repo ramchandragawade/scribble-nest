@@ -255,6 +255,41 @@ app.delete('/note/:noteId', authenticateToken, async(req,res)=>{
     }
 });
 
+app.put('/pinned-note/:noteId', authenticateToken, async (req, res) => {
+    const noteId = req.params.noteId;
+    const { isPinned } = req.body;
+    const { user } = req.user;
+    if (isPinned !== true && isPinned !== false) {
+        return res.status(400).json({
+            error: true,
+            message: 'Error updating pinned'
+        })
+    }
+    try {
+        const note = await Notes.findOne({ _id: noteId, userId: user._id });
+        if (!note) {
+            return res.status(404).json({
+                error: true,
+                message: 'Note not found!'
+            })
+        }
+        note.isPinned = isPinned || false;
+        await note.save();
+        return res.json({
+            error: false,
+            note,
+            message: 'Note updated successfully'
+        });
+    } catch (e) {
+        return res.status(500).json({
+            error: true,
+            message: 'Internal server error',
+            errorText: e
+        })
+    }
+
+})
+
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
     console.log('Connected BE to 3002');
