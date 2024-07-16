@@ -1,0 +1,3 @@
+{
+    "connectionString":"mongodb+srv://scribble:scribble123@cluster0.74g6yp7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+}

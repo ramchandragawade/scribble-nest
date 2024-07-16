@@ -26,7 +26,7 @@ const Navbar = () => {
         <div className="w-full relative flex flex-1 justify-between md:justify-normal md:w-auto md:static md:block">
           <a
             className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-black"
-            href="#"
+            href="/dashboard"
           >
             Scribble-Nest
           </a>
