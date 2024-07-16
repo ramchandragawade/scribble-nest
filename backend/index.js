@@ -8,7 +8,8 @@ import config from "./config.json" assert { type: "json" };
 import jwt from "jsonwebtoken";
 mongoose.connect(config.connectionString);
 const app = express();
-import {User} from "./models/user.model.js";
+import { User } from "./models/user.model.js";
+import { Notes } from "./models/notes.model.js";
 app.use(express.json());
 app.use(cors({
     origin: '*'
@@ -42,7 +43,7 @@ app.post('/register', async (req, res) => {
     const isUser = await User.findOne({
         email
     })
-    if(isUser) {
+    if (isUser) {
         return res.status(400).json({
             error: true,
             message: 'User already exists'
@@ -55,7 +56,7 @@ app.post('/register', async (req, res) => {
     })
 
     await user.save();
-    const accessToken = jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, {
+    const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: '36000m'
     });
     return res.json({
@@ -66,8 +67,8 @@ app.post('/register', async (req, res) => {
     })
 });
 
-app.post('/login',async (req,res)=>{
-    const {email, password} = req.body;
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
     if (!email) {
         return res.status(400).json({
             error: true,
@@ -80,19 +81,19 @@ app.post('/login',async (req,res)=>{
             message: 'Password is required'
         })
     }
-    const userInfo = await User.findOne({email});
-    if(!userInfo){
+    const userInfo = await User.findOne({ email });
+    if (!userInfo) {
         return res.status(400).json({
             error: true,
             message: 'User not found'
         })
     }
-    if(userInfo.email === email && userInfo.password === password) {
+    if (userInfo.email === email && userInfo.password === password) {
         const user = {
             user: userInfo
         };
-        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{
-            expiresIn:'36000m'
+        const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+            expiresIn: '36000m'
         });
         return res.json({
             error: false,
@@ -104,6 +105,44 @@ app.post('/login',async (req,res)=>{
         return res.status(400).json({
             error: true,
             message: 'Invalid credentials!'
+        })
+    }
+
+})
+
+app.post('/add-note', authenticateToken, async (req, res) => {
+    const { title, content, tags } = req.body;
+    const { user } = req.user;
+    if (!title) {
+        return res.status(400).json({
+            error: true,
+            message: 'Title is required'
+        })
+    }
+    if (!content) {
+        return res.status(400).json({
+            error: true,
+            message: 'Content is required'
+        })
+    }
+    try {
+        const note = new Notes({
+            title,
+            content,
+            tags: tags || [],
+            userId: user._id
+        });
+        await note.save();
+        return res.json({
+            error: false,
+            note,
+            message: 'Note saved successfully'
+        });
+    } catch(e){
+        return res.status(500).json({
+            error: true,
+            message: 'Internal server error',
+            errorText: e
         })
     }
 
