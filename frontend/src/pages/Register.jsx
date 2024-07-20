@@ -1,14 +1,16 @@
 import { useState } from "react";
 import Navbar from "../components/nav/Navbar"
 import PasswordInput from "../components/input/PasswordInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { validateEmail } from "../utils/helper";
+import axiosInstance from "../utils/axiosInstance";
 
 const Register = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -26,6 +28,27 @@ const Register = () => {
     }
     setError(null);
     //Register API call
+    try {
+      const res = await axiosInstance.post('/register', {
+        fullName:name,
+        email,
+        password: pass
+      });
+      if (res.data && res.data.accessToken) {
+        localStorage.setItem('token', res.data.accessToken);
+        return navigate('/dashboard');
+      }
+      if (res.data?.error) {
+        setError(res.data.message);
+        return;
+      }
+    } catch (error) {
+      if(error.response && error.response.data && error.response.data.message){
+        setError(error.response.data.message);
+      } else {
+        setError('An unexpected error occurred. Please try again!');
+      }
+    }
   }
 
   return (

@@ -12,6 +12,7 @@ const Navbar = ({ userInfo }) => {
     setNavbarOpen(!navbarOpen);
   };
   const onLogout = () => {
+    localStorage.clear();
     navigate('/login');
   }
   const handleSearch = () => {
@@ -53,9 +54,11 @@ const Navbar = ({ userInfo }) => {
               />
 
             </li>
-            <li className="nav-item">
+            {
+              userInfo && <li className="nav-item">
               <ProfileInfo userInfo={userInfo} onLogout={onLogout} />
             </li>
+            }
           </ul>
         </div>
       </div>
