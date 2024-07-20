@@ -8,24 +8,13 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 
 const Home = () => {
-  const noteCard = (
-    <NoteCard
-      title={'Meeting on 7th April'}
-      date={'3rd April 2024'}
-      content={'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.'}
-      tags={'#meeting'}
-      isPinned={true}
-      onDelete={() => { }}
-      onEdit={() => { }}
-      onPinNote={() => { }}
-    />
-  );
   const [openAddEditModal, setOpenAddEditModal] = useState({
     isShown: false,
     type: 'add',
     data: null
   });
   const [userInfo, setUserInfo] = useState(null);
+  const [allNotes, setAllNotes] = useState([]);
   const navigate = useNavigate();
   const getUserInfo = async () => {
     try {
@@ -40,22 +29,43 @@ const Home = () => {
       }
     }
   };
+  const getAllNotes = async () => {
+    try {
+      const res = await axiosInstance.get('/all-notes');
+      if (res.data?.notes) {
+        setAllNotes(res.data.notes)
+      }
+    } catch (e) {
+      console.log('Unexpected error! Please try again.');
+    }
+  }
 
-  useEffect(()=>{
+  useEffect(() => {
     getUserInfo();
-  },[]);
+    getAllNotes();
+  }, []);
 
   return (
     <>
-      <Navbar userInfo={userInfo}/>
+      <Navbar userInfo={userInfo} />
       <div className="container mx-auto">
         <div className="md:grid md:grid-cols-3 md:gap-4 md:mt-6 mb-20 md:mb-0">
-          {noteCard}
-          {noteCard}
-          {noteCard}
-          {noteCard}
-          {noteCard}
-          {noteCard}
+          {allNotes.length>0 ? allNotes.map((item) => {
+            const {_id, title, createdOn:date, content, tags, isPinned} = item;
+            return <NoteCard
+              key={_id}
+              title={title}
+              date={date}
+              content={content}
+              tags={tags}
+              isPinned={isPinned}
+              onDelete={() => { }}
+              onEdit={() => { }}
+              onPinNote={() => { }}
+            />
+          }):
+          <p className="">No notes to show!</p>
+          }
         </div>
       </div>
       <button
