@@ -4,7 +4,7 @@ import SearchBar from "../search/SearchBar"
 import { useState } from 'react'
 import { FaBars } from 'react-icons/fa6'
 
-const Navbar = () => {
+const Navbar = ({ userInfo }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ const Navbar = () => {
 
             </li>
             <li className="nav-item">
-              <ProfileInfo onLogout={onLogout} />
+              <ProfileInfo userInfo={userInfo} onLogout={onLogout} />
             </li>
           </ul>
         </div>
