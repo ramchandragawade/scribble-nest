@@ -89,7 +89,7 @@ const Home = () => {
         setAllNotes(res.data.notes);
       }
     } catch (e) {
-      console.log('Unexpected error! Please try again.' + e);
+      console.log(getMessageByKey('UNEXPECTED_ERROR') + e);
     }
   }
 
@@ -106,7 +106,7 @@ const Home = () => {
         getAllNotes();
       }
     } catch (error) {
-      console.log('Unexpected error! Please try again.' + error);
+      console.log(getMessageByKey('UNEXPECTED_ERROR') + error);
     }
   }
 
@@ -120,7 +120,7 @@ const Home = () => {
         getAllNotes();
       }
     } catch (error) {
-      console.log('Unexpected error! Please try again.' + error);
+      console.log(getMessageByKey('UNEXPECTED_ERROR') + error);
     }
   }
 
