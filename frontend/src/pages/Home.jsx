@@ -7,6 +7,8 @@ import { MdAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import ToastMsg from "../components/misc/ToastMsg";
+import EmptyCard from "../components/cards/EmptyCard";
+import addNotesImg from '../assets/images/add-notes.svg';
 
 const Home = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -75,7 +77,7 @@ const Home = () => {
     try {
       const res = await axiosInstance.delete(`/note/${noteData?._id}`);
       if (res.data && !res.data.error) {
-        handleShowToast('Note Deleted Successfully!','delete');
+        handleShowToast('Note Deleted Successfully!', 'delete');
         getAllNotes();
       }
     } catch (error) {
@@ -92,24 +94,29 @@ const Home = () => {
     <>
       <Navbar userInfo={userInfo} />
       <div className="container mx-auto">
-        <div className="md:grid md:grid-cols-3 md:gap-4 md:mt-6 mb-20 md:mb-0">
-          {allNotes.length > 0 ? allNotes.map((item) => {
-            const { _id, title, createdOn: date, content, tags, isPinned } = item;
-            return <NoteCard
-              key={_id}
-              title={title}
-              date={date}
-              content={content}
-              tags={tags}
-              isPinned={isPinned}
-              onDelete={() => { handleDelete(item) }}
-              onEdit={() => { handleEdit(item) }}
-              onPinNote={() => { }}
-            />
-          }) :
-            <p className="">No notes to show!</p>
-          }
-        </div>
+        {allNotes.length > 0 ? (
+          <div className="md:grid md:grid-cols-3 md:gap-4 md:mt-6 mb-20 md:mb-0">
+            {allNotes.map((item) => {
+              const { _id, title, createdOn: date, content, tags, isPinned } = item;
+              return <NoteCard
+                key={_id}
+                title={title}
+                date={date}
+                content={content}
+                tags={tags}
+                isPinned={isPinned}
+                onDelete={() => { handleDelete(item) }}
+                onEdit={() => { handleEdit(item) }}
+                onPinNote={() => { }}
+              />
+            })
+            }
+          </div>) :
+          <EmptyCard
+            imgSrc={addNotesImg}
+            message={`Got a new idea or thought? Click on add button to add a new note and keep track of everything on your mind. Your next great idea is just a note away!`}
+          />
+        }
       </div>
       <button
         className="w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full md:rounded-2xl bg-primary hover:bg-blue-600 fixed right-4 bottom-6 md:bottom-10 md:right-10"

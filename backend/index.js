@@ -20,7 +20,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    console.log(req.body)
     const { fullName, email, password } = req.body;
     if (!fullName) {
         return res.status(400).json({
