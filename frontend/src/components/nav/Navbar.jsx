@@ -4,7 +4,7 @@ import SearchBar from "../search/SearchBar"
 import { useState } from 'react'
 import { FaBars } from 'react-icons/fa6'
 
-const Navbar = ({ userInfo }) => {
+const Navbar = ({ userInfo, onSearchNote, onClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navigate = useNavigate();
@@ -16,10 +16,13 @@ const Navbar = ({ userInfo }) => {
     navigate('/login');
   }
   const handleSearch = () => {
-
+    if(searchQuery) {
+      onSearchNote(searchQuery);
+    }
   }
   const handleClearSearch = () => {
     setSearchQuery('');
+    onClearSearch();
   }
   return (
     <nav className="relative flex flex-wrap items-center px-2 py-3 mb-3 bg-white drop-shadow-lg">

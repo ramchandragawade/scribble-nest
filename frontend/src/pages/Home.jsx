@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import ToastMsg from "../components/misc/ToastMsg";
 import EmptyCard from "../components/cards/EmptyCard";
-import addNotesImg from '../assets/images/add-notes.svg';
+import AddNotesImg from '../assets/images/add-notes.svg';
+import NoResultImg from '../assets/images/no-result.svg';
 
 const Home = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -23,6 +24,7 @@ const Home = () => {
     message: '',
     type: 'add'
   });
+  const [isSearch, setIsSearch] = useState(false);
 
   const navigate = useNavigate();
 
@@ -62,6 +64,7 @@ const Home = () => {
       }
     }
   };
+
   const getAllNotes = async () => {
     try {
       const res = await axiosInstance.get('/all-notes');
@@ -71,6 +74,27 @@ const Home = () => {
     } catch (e) {
       console.log('Unexpected error! Please try again.');
     }
+  }
+
+  const onSearchNote = async (query) => {
+    try {
+      const res = await axiosInstance.get('/search-notes', {
+        params: {
+          query
+        }
+      });
+      if (res.data?.notes) {
+        setIsSearch(true);
+        setAllNotes(res.data.notes);
+      }
+    } catch (e) {
+      console.log('Unexpected error! Please try again.' + e);
+    }
+  }
+
+  const onClearSearch = () => {
+    setIsSearch(false);
+    getAllNotes();
   }
 
   const handleDelete = async (noteData) => {
@@ -92,7 +116,7 @@ const Home = () => {
 
   return (
     <>
-      <Navbar userInfo={userInfo} />
+      <Navbar userInfo={userInfo} onSearchNote={onSearchNote} onClearSearch={onClearSearch} />
       <div className="container mx-auto">
         {allNotes.length > 0 ? (
           <div className="md:grid md:grid-cols-3 md:gap-4 md:mt-6 mb-20 md:mb-0">
@@ -113,8 +137,12 @@ const Home = () => {
             }
           </div>) :
           <EmptyCard
-            imgSrc={addNotesImg}
-            message={`Got a new idea or thought? Click on add button to add a new note and keep track of everything on your mind. Your next great idea is just a note away!`}
+            imgSrc={isSearch ? NoResultImg : AddNotesImg}
+            message={
+              isSearch ?
+              `It looks like there are no notes matching your search. Try adjusting your keywords or creating a new note to capture your thoughts!`
+              :`Got a new idea or thought? Click on add button to add a new note and keep track of everything on your mind. Your next great idea is just a note away!`
+            }
           />
         }
       </div>
