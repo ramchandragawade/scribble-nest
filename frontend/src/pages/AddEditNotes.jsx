@@ -2,6 +2,8 @@ import { useState } from "react"
 import TagInput from "../components/input/TagInput"
 import { MdClose } from "react-icons/md";
 import axiosInstance from "../utils/axiosInstance";
+import getMessageByKey from "../assets/Messages";
+// import {  } from "../assets/Messages";
 
 const AddEditNotes = ({ noteData, type, onClose, getAllNotes, showToast }) => {
     const [title, setTitle] = useState(noteData?.title || '');
@@ -18,7 +20,7 @@ const AddEditNotes = ({ noteData, type, onClose, getAllNotes, showToast }) => {
                 tags
             });
             if(res.data?.note) {
-                showToast('Note Added Successfully!');
+                showToast(getMessageByKey('SCRIBBLE_ADDED'));
                 getAllNotes();
                 onClose();
             }
@@ -26,7 +28,7 @@ const AddEditNotes = ({ noteData, type, onClose, getAllNotes, showToast }) => {
             if (error?.response?.data?.message) {
                 setError(error.response.data.message);
             } else {
-                setError('An unexpected error occurred. Please try again!');
+                setError(getMessageByKey('UNEXPECTED_ERROR'));
             }
         }
     }
@@ -40,7 +42,7 @@ const AddEditNotes = ({ noteData, type, onClose, getAllNotes, showToast }) => {
                 tags
             });
             if(res.data?.note) {
-                showToast('Note Updated Successfully!');
+                showToast(getMessageByKey('SCRIBBLE_UPDATED'));
                 getAllNotes();
                 onClose();
             }
@@ -48,7 +50,7 @@ const AddEditNotes = ({ noteData, type, onClose, getAllNotes, showToast }) => {
             if (error?.response?.data?.message) {
                 setError(error.response.data.message);
             } else {
-                setError('An unexpected error occurred. Please try again!');
+                setError(getMessageByKey('UNEXPECTED_ERROR'));
             }
         }
     }
@@ -95,7 +97,7 @@ const AddEditNotes = ({ noteData, type, onClose, getAllNotes, showToast }) => {
                 <label htmlFor="" className="input-label">TITLE</label>
                 <input type="text"
                     className="text-md md:text-2xl text-slate-950 outline-none"
-                    placeholder="Summary for the note"
+                    placeholder={getMessageByKey('PLACEHOLDER_SUMMARY_SCRIBBLE')}
                     value={title}
                     onChange={onTitleChange}
                 />

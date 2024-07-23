@@ -10,6 +10,7 @@ import ToastMsg from "../components/misc/ToastMsg";
 import EmptyCard from "../components/cards/EmptyCard";
 import AddNotesImg from '../assets/images/add-notes.svg';
 import NoResultImg from '../assets/images/no-result.svg';
+import getMessageByKey from "../assets/Messages";
 
 const Home = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -72,7 +73,7 @@ const Home = () => {
         setAllNotes(res.data.notes)
       }
     } catch (e) {
-      console.log('Unexpected error! Please try again.');
+      console.log(getMessageByKey('UNEXPECTED_ERROR') + e);
     }
   }
 
@@ -101,7 +102,7 @@ const Home = () => {
     try {
       const res = await axiosInstance.delete(`/note/${noteData?._id}`);
       if (res.data && !res.data.error) {
-        handleShowToast('Note Deleted Successfully!', 'delete');
+        handleShowToast(getMessageByKey('SCRIBBLE_DELETED'), 'delete');
         getAllNotes();
       }
     } catch (error) {
@@ -111,11 +112,11 @@ const Home = () => {
 
   const handlePin = async (noteData) => {
     try {
-      const res = await axiosInstance.put(`/pinned-note/${noteData?._id}`,{
-        isPinned:!noteData.isPinned
+      const res = await axiosInstance.put(`/pinned-note/${noteData?._id}`, {
+        isPinned: !noteData.isPinned
       });
       if (res.data && !res.data.error) {
-        handleShowToast(`Post ${noteData.isPinned?'unpinned':'pinned'}!`);
+        handleShowToast(`${getMessageByKey(noteData.isPinned ? 'SCRIBBLE_UNPINNED' : 'SCRIBBLE_PINNED')}`);
         getAllNotes();
       }
     } catch (error) {
@@ -153,9 +154,7 @@ const Home = () => {
           <EmptyCard
             imgSrc={isSearch ? NoResultImg : AddNotesImg}
             message={
-              isSearch ?
-              `It looks like there are no notes matching your search. Try adjusting your keywords or creating a new note to capture your thoughts!`
-              :`Got a new idea or thought? Click on add button to add a new note and keep track of everything on your mind. Your next great idea is just a note away!`
+              getMessageByKey(isSearch ? 'SCRIBBLE_SEARCH_NOT_FOUND' : 'SCRIBBLE_LIST_EMPTY')
             }
           />
         }
