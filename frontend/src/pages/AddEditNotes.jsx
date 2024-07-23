@@ -4,9 +4,9 @@ import { MdClose } from "react-icons/md";
 import axiosInstance from "../utils/axiosInstance";
 
 const AddEditNotes = ({ noteData, type, onClose, getAllNotes }) => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [tags, setTags] = useState([]);
+    const [title, setTitle] = useState(noteData?.title || '');
+    const [content, setContent] = useState(noteData?.content || '');
+    const [tags, setTags] = useState(noteData?.tags || []);
     const [error, setError] = useState(null);
 
     //Add note
@@ -32,6 +32,23 @@ const AddEditNotes = ({ noteData, type, onClose, getAllNotes }) => {
 
     //Edit note
     const editNote = async () => {
+        try {
+            const res = await axiosInstance.put(`/note/${noteData?._id}`, {
+                title,
+                content,
+                tags
+            });
+            if(res.data?.note) {
+                getAllNotes();
+                onClose();
+            }
+        } catch (error) {
+            if (error?.response?.data?.message) {
+                setError(error.response.data.message);
+            } else {
+                setError('An unexpected error occurred. Please try again!');
+            }
+        }
     }
 
     const onTitleChange = ({ target }) => {
@@ -104,7 +121,7 @@ const AddEditNotes = ({ noteData, type, onClose, getAllNotes }) => {
             }
             <button
                 className="btn-primary font-medium mt-5 p-3" onClick={handleAddNote}>
-                ADD
+                {type==='edit' ? 'UPDATE' : 'ADD'}
             </button>
         </div>
     )
