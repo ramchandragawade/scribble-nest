@@ -71,6 +71,18 @@ const Home = () => {
     }
   }
 
+  const handleDelete = async (noteData) => {
+    try {
+      const res = await axiosInstance.delete(`/note/${noteData?._id}`);
+      if (res.data && !res.data.error) {
+        handleShowToast('Note Deleted Successfully!','delete');
+        getAllNotes();
+      }
+    } catch (error) {
+      console.log('Unexpected error! Please try again.' + error);
+    }
+  }
+
   useEffect(() => {
     getUserInfo();
     getAllNotes();
@@ -90,7 +102,7 @@ const Home = () => {
               content={content}
               tags={tags}
               isPinned={isPinned}
-              onDelete={() => { }}
+              onDelete={() => { handleDelete(item) }}
               onEdit={() => { handleEdit(item) }}
               onPinNote={() => { }}
             />

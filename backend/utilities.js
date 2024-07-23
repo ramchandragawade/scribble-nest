@@ -5,10 +5,8 @@ export function authenticateToken (req, res, next) {
     if(!token) {
         return res.sendStatus(401);
     }
-    console.log('token:'+process.env.ACCESS_TOKEN_SECRET);
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user)=>{
         if(err) return res.sendStatus(401);
-        console.log(user);
         req.user = user;
         next();
     })
