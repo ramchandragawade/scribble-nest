@@ -6,6 +6,7 @@ import Navbar from "../components/nav/Navbar"
 import { MdAdd } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
+import ToastMsg from "../components/misc/ToastMsg";
 
 const Home = () => {
   const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -15,14 +16,35 @@ const Home = () => {
   });
   const [userInfo, setUserInfo] = useState(null);
   const [allNotes, setAllNotes] = useState([]);
+  const [showToast, setShowToast] = useState({
+    isShown: false,
+    message: '',
+    type: 'add'
+  });
+
   const navigate = useNavigate();
-  
-  const handleEdit = (noteDetails)=>{
+
+  const handleEdit = (noteDetails) => {
     setOpenAddEditModal({
       isShown: true,
       type: 'edit',
       data: noteDetails
     });
+  }
+
+  const handleShowToast = (message, type) => {
+    setShowToast({
+      isShown: true,
+      message,
+      type
+    })
+  }
+
+  const handleCloseToast = () => {
+    setShowToast({
+      isShown: false,
+      message: ''
+    })
   }
 
   const getUserInfo = async () => {
@@ -59,8 +81,8 @@ const Home = () => {
       <Navbar userInfo={userInfo} />
       <div className="container mx-auto">
         <div className="md:grid md:grid-cols-3 md:gap-4 md:mt-6 mb-20 md:mb-0">
-          {allNotes.length>0 ? allNotes.map((item) => {
-            const {_id, title, createdOn:date, content, tags, isPinned} = item;
+          {allNotes.length > 0 ? allNotes.map((item) => {
+            const { _id, title, createdOn: date, content, tags, isPinned } = item;
             return <NoteCard
               key={_id}
               title={title}
@@ -72,8 +94,8 @@ const Home = () => {
               onEdit={() => { handleEdit(item) }}
               onPinNote={() => { }}
             />
-          }):
-          <p className="">No notes to show!</p>
+          }) :
+            <p className="">No notes to show!</p>
           }
         </div>
       </div>
@@ -114,8 +136,17 @@ const Home = () => {
             })
           }}
           getAllNotes={getAllNotes}
+          showToast={handleShowToast}
         />
       </Modal>
+
+      <ToastMsg
+        isShown={showToast.isShown}
+        message={showToast.message}
+        type={showToast.type}
+        onClose={handleCloseToast}
+      />
+
     </>
   )
 }
