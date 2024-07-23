@@ -109,6 +109,20 @@ const Home = () => {
     }
   }
 
+  const handlePin = async (noteData) => {
+    try {
+      const res = await axiosInstance.put(`/pinned-note/${noteData?._id}`,{
+        isPinned:!noteData.isPinned
+      });
+      if (res.data && !res.data.error) {
+        handleShowToast(`Post ${noteData.isPinned?'unpinned':'pinned'}!`);
+        getAllNotes();
+      }
+    } catch (error) {
+      console.log('Unexpected error! Please try again.' + error);
+    }
+  }
+
   useEffect(() => {
     getUserInfo();
     getAllNotes();
@@ -131,7 +145,7 @@ const Home = () => {
                 isPinned={isPinned}
                 onDelete={() => { handleDelete(item) }}
                 onEdit={() => { handleEdit(item) }}
-                onPinNote={() => { }}
+                onPinNote={() => { handlePin(item) }}
               />
             })
             }
