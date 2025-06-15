@@ -6,6 +6,9 @@
 
 Whether you're exploring full-stack development or looking to showcase a robust CRUD app with end-to-end functionality, **Scribble Nest** is an ideal project for your portfolio.
 
+### Live Demo  
+👉 [scribblenest.ramchandragawade.in](https://scribblenest.ramchandragawade.in)
+
 ---
 
 ## 🌟 Key Features
@@ -69,6 +72,7 @@ Whether you're exploring full-stack development or looking to showcase a robust 
 - **Custom Components** – Includes input fields, popups, cards, toasts, etc.
 
 ---
+
 ## 📂 Get Started (Optional Setup Instructions)
 
 > These steps can be added if you're planning to share the source code:
