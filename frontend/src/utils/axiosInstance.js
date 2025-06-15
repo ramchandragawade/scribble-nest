@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { BACKEND_URL } from './constants';
 
 const axiosInstance = axios.create({
-    baseURL: BACKEND_URL,
+    baseURL: import.meta.env.VITE_BACKEND_URL,
     timeout: 10000,
     headers: {
         "Content-Type": "application/json"
