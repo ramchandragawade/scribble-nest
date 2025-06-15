@@ -156,6 +156,13 @@ const Home = () => {
             message={
               getMessageByKey(isSearch ? 'SCRIBBLE_SEARCH_NOT_FOUND' : 'SCRIBBLE_LIST_EMPTY')
             }
+            onClickFn={() => {
+              setOpenAddEditModal({
+                isShown: true,
+                type: 'add',
+                data: null
+              });
+            }}
           />
         }
       </div>
