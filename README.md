@@ -4,7 +4,7 @@
 
 **Scribble Nest** is a sleek and feature-rich Full Stack application built using the **MERN stack** – **MongoDB**, **Express.js**, **React.js**, and **Node.js**. It enables users to securely create, manage, and organize personal scribbles with ease. The app includes secure authentication, an intuitive user interface, real-time editing capabilities, the ability to pin important scribbles, search functionality, and more.
 
-Whether you're exploring full-stack development or looking to showcase a robust CRUD app with end-to-end functionality, **Scribble Nest** is an ideal project for your portfolio.
+Whether you're exploring full-stack development or looking to showcase a robust **CRUD** app with end-to-end functionality, **Scribble Nest** is an ideal project for your portfolio.
 
 ### Live Demo  
 👉 [scribblenest.ramchandragawade.in](https://scribblenest.ramchandragawade.in)
