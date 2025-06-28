@@ -39,43 +39,55 @@ const Login = () => {
       }
     }
   }
+  const demoLogin = import.meta.env.VITE_SHOW_DEMO_LOGIN;
+  const [demoEmail,demoPass] = demoLogin && demoLogin.split('|');
   return (
-    <>
-      <Navbar />
+		<>
+			<Navbar />
+      {demoEmail && demoPass && (
+				<div className="flex-col justify-self-center mt-28 text-center text-wrap text-sm text-slate-600 font-semibold">
+          <p>Demo Login:</p>
+					<p>Email: {demoEmail} <b>|</b> Pass: {demoPass}</p>
+				</div>
+			)}
+			<div className={`flex items-center justify-center ${demoEmail && demoPass ? '' : 'mt-28'}`}>
+				<div className="w-96 border rounded bg-white px-7 py-10">
+					<form onSubmit={handleLogin}>
+						<h4 className="text-2xl mb-7">Login</h4>
 
-      <div className="flex items-center justify-center mt-28">
-        <div className="w-96 border rounded bg-white px-7 py-10">
+						<input
+							type="email"
+							placeholder="Email"
+							className="input-box"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
 
-          <form onSubmit={handleLogin}>
-            <h4 className="text-2xl mb-7">Login</h4>
+						<PasswordInput
+							value={pass}
+							onChange={(e) => setPass(e.target.value)}
+						/>
+						{error && (
+							<p className="text-red-500 text-xs pb-1">{error}</p>
+						)}
+						<button type="submit" className="btn-primary">
+							Login
+						</button>
 
-            <input type="email"
-              placeholder="Email"
-              className="input-box"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <PasswordInput
-              value={pass}
-              onChange={(e) => setPass(e.target.value)}
-            />
-            {
-              error && <p className="text-red-500 text-xs pb-1">{error}</p>
-            }
-            <button type="submit" className="btn-primary">Login</button>
-
-            <p className="text-sm text-center mt-4">
-              Not registered yet?{" "}
-              <Link to="/register" className=" font-medium text-primary underline">
-                Create and Account
-              </Link>
-            </p>
-          </form>
-        </div>
-      </div>
-    </>
-  )
+						<p className="text-sm text-center mt-4">
+							Not registered yet?{' '}
+							<Link
+								to="/register"
+								className=" font-medium text-primary underline"
+							>
+								Create and Account
+							</Link>
+						</p>
+					</form>
+				</div>
+			</div>
+		</>
+  );
 }
 
 export default Login

@@ -59,6 +59,11 @@ const Home = () => {
         setUserInfo(res.data.user);
       }
     } catch (error) {
+      setShowToast({
+        isShown: true,
+        message: 'Server Down!!!',
+        type: 'error',
+      });
       if (error.response.status === 401) {
         localStorage.clear();
         navigate('/login');
@@ -73,6 +78,11 @@ const Home = () => {
         setAllNotes(res.data.notes)
       }
     } catch (e) {
+      setShowToast({
+        isShown: true,
+        message: 'Server Down!!!',
+        type: 'error',
+      });
       console.log(getMessageByKey('UNEXPECTED_ERROR') + e);
     }
   }
@@ -89,6 +99,11 @@ const Home = () => {
         setAllNotes(res.data.notes);
       }
     } catch (e) {
+      setShowToast({
+        isShown: true,
+        message: 'Server Down!!!',
+        type: 'error',
+      });
       console.log(getMessageByKey('UNEXPECTED_ERROR') + e);
     }
   }
@@ -106,6 +121,11 @@ const Home = () => {
         getAllNotes();
       }
     } catch (error) {
+      setShowToast({
+        isShown: true,
+        message: 'Server Down!!!',
+        type: 'error',
+      });
       console.log(getMessageByKey('UNEXPECTED_ERROR') + error);
     }
   }
@@ -120,6 +140,11 @@ const Home = () => {
         getAllNotes();
       }
     } catch (error) {
+      setShowToast({
+        isShown: true,
+        message: 'Server Down!!!',
+        type: 'error',
+      });
       console.log(getMessageByKey('UNEXPECTED_ERROR') + error);
     }
   }
