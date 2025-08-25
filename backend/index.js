@@ -15,7 +15,7 @@ app.use(cors({
 }));
 
 app.get('/', (req, res) => {
-    res.send('')
+    res.send('Service live');
 });
 
 app.post('/register', async (req, res) => {
