@@ -355,5 +355,5 @@ app.get('/search-notes', authenticateToken, async (req, res) => {
 
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
-    console.log('Connected BE to 3002');
+    console.log('Connected BE to '+port);
 });
