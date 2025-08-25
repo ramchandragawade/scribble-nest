@@ -84,6 +84,7 @@ const Home = () => {
         type: 'error',
       });
       console.log(getMessageByKey('UNEXPECTED_ERROR') + e);
+      navigate('/login');
     }
   }
 
